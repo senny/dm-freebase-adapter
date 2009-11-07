@@ -56,9 +56,4 @@ describe "FreebaseAdapter" do
     titles.each {|title| title.should =~ /^Balance 00.*$/}
   end
 
-  it "should work with greather than queries" do
-    results = Artist.first(:name => "Paul Kalkbrenner")
-    puts results.inspect
-  end
-
 end

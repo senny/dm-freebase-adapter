@@ -32,7 +32,6 @@ module DataMapper
       private
 
       def build_metaweb_condition_key(condition)
-        puts condition.class
         case condition
         when DataMapper::Query::Conditions::LikeComparison
           "#{condition.subject.name}~="
@@ -57,14 +56,12 @@ module DataMapper
         case condition.subject
         when DataMapper::Associations::ManyToOne::Relationship
           {:id => condition.value.id}
-          break
         else
           condition.value
         end
       end
 
       def convert_metaweb_result(results)
-        # puts result.inspect
         results.each do |element|
           element.each do |key, value|
             element[key] = extract_value(value)
@@ -98,8 +95,6 @@ module DataMapper
       end
 
       def metaweb_read(query)
-        puts JSON.dump(query)
-        puts ""
         metaweb_query = "?query={\"query\": [#{JSON.dump(query)}]}"
         url = "#{query_url}#{URI.escape(metaweb_query)}"
         response = Net::HTTP.get_response(URI.parse(url))
@@ -108,7 +103,6 @@ module DataMapper
         result = JSON.parse(data)
 
         if result['code'] == '/api/status/error'
-          puts result.inspect
           raise "web service error #{url}"
         end
         return result

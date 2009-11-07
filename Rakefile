@@ -5,13 +5,13 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "dm-freebase-adapter"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{DataMapper adapter to access data stored in Freebase}
+    gem.description = %Q{This Adapter allows you to access any Freebase data with your DataMapper models}
     gem.email = "yves.senn@gmail.com"
     gem.homepage = "http://github.com/senny/dm-freebase-adapter"
     gem.authors = ["Yves Senn"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "cucumber", ">= 0"
+    # gem.add_development_dependency "cucumber", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
