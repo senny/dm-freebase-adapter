@@ -1,13 +1,50 @@
 = dm-freebase-adapter
 
-This adapter allows you to map any freebase resource to DataMapper models.
+This adapter allows you to map any freebase resource to DataMapper
+models.
 
 == Installation
 
 To install the freebase adapter execute:
 
-`gem install dm-freebase-adapter`
+   gem install dm-freebase-adapter
 
 == Usage
+
+First you need to setup DataMapper to use the freebase adapter for
+your models
+
+   DataMapper.setup(:default, :adapter => 'freebase')
+
+Then you can define your models as needed. You can map the properties
+from freebase to your models as you wish. You can use the Freebase
+Schema Explorer[http://schemas.freebaseapps.com/] to get an idea, what
+attributes you can map.
+Below is an example mapping for the /music/artist and the /music/album freebase types
+
+  class Artist
+    include DataMapper::Resource
+    storage_names[:default] = '/music/artist'
+    
+    property :id, String, :key => true
+    property :guid, String
+    property :name, String
+    property :genre, String
+  
+    has n, :albums, :child_key => [:artist]
+  end
+
+  class Album
+    include DataMapper::Resource
+
+    storage_names[:default] = '/music/album'
+
+    property :id, String, :key => true
+    property :name, String
+    property :track, String
+
+    belongs_to :artist, :child_key => [:artist]
+  end
+
 
 Copyright (c) 2009 Yves Senn. See LICENSE for details.
