@@ -8,12 +8,6 @@ module DataMapper
       FREEBASE_HOST = "www.freebase.com"
       FREEBASE_PATH = "/api/service/mqlread"
 
-      def query_url
-        host = (options[:host] && !options[:host].empty?) ? options[:host] : FREEBASE_HOST
-        path = (options[:path] && !options[:path].empty?) ? options[:path] : FREEBASE_PATH
-        "http://#{ host }#{ path }"
-      end
-
       def read(query)
         metaweb_query = {}
         fields = query.fields
@@ -50,6 +44,12 @@ module DataMapper
         else
           condition.subject.name
         end
+      end
+
+      def query_url
+        host = (options[:host] && !options[:host].empty?) ? options[:host] : FREEBASE_HOST
+        path = (options[:path] && !options[:path].empty?) ? options[:path] : FREEBASE_PATH
+        "http://#{ host }#{ path }"
       end
 
       def build_metaweb_condition(condition)
