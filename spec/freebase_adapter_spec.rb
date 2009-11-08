@@ -1,3 +1,4 @@
+
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 class Artist
@@ -9,6 +10,7 @@ class Artist
   property :guid, String
   property :name, String
   property :genre, String
+  property :label, String
 
   has n, :albums, :child_key => [:artist]
 end
@@ -21,6 +23,7 @@ class Album
   property :id, String, :key => true
   property :name, String
   property :track, String
+  property :release_date, Date
 
   belongs_to :artist, :child_key => [:artist]
 end
@@ -33,13 +36,30 @@ describe "FreebaseAdapter" do
     artist.genre.should_not be_empty
   end
 
-  it "should fetch associations on demand" do
+  it "should fetch one-to-many associations on demand" do
     artist = Artist.get('/en/apparat')
     artist.albums.size.should > 0
     titles = artist.albums.collect(&:name)
     ["Silizium EP", "Walls"].each do |title|
       titles.should include(title)
     end
+  end
+
+  it "should fetch belongs_to associations" do
+    album = Album.get('/guid/9202a8c04000641f800000000345ef66')
+    pending("belongs_to associations are not working right now")
+  end
+
+  it "should sort the result ascending" do
+    albums = Album.all(:name => "Balance", :order => [:release_date.asc])
+    dates = albums.collect(&:release_date).compact
+    dates.should == dates.sort
+  end
+
+  it "should sort the result descending" do
+    albums = Album.all(:name => "Balance", :order => [:release_date.desc])
+    dates = albums.collect(&:release_date).compact
+    dates.should == dates.sort.reverse
   end
 
   it "should work with inclusion (in) queries" do
